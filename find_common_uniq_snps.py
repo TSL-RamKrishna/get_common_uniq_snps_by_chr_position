@@ -13,6 +13,7 @@ python find_uniq_common_datalines.py --files file1.txt file2.txt file3.txt --exa
 python find_uniq_common_datalines.py --files file1.txt file2.txt file3.txt --exactly 2
 python find_uniq_common_datalines.py --files file1.txt file2.txt file3.txt --atmost 2
 python find_uniq_common_datalines.py --files file1.txt file2.txt file3.txt --atleast 2
+python find_uniq_common_datalines.py --files file1.txt file2.txt file3.txt --atleast 2 --common 
 '''
 parser = argparse.ArgumentParser(description=description, usage=usage)
 
@@ -73,10 +74,14 @@ class common_uniq_snp_positions():
 
         ''' get common snps by chr and position '''
         print("Getting common snps present in all input files")
-        for key1 in self.all_lines.keys():
-            for key2 in self.all_lines[key1].keys():
-                if int(self.all_lines[key1][key2]["count"]) == self.number_of_files:
-                    print(key1 + "\t" + key2)
+        with open("common_snps.txt", 'w') as commonsnps:
+            for key1 in self.all_lines.keys():
+                for key2 in self.all_lines[key1].keys():
+                    if int(self.all_lines[key1][key2]["count"]) == self.number_of_files:
+                        # print(key1 + "\t" + key2)
+                        commonsnps.write(key1 + "\t" + key2 + "\n")
+        print("Common snps written to file: common_snps.txt")
+
         
     
     def get_atleast(self, atleast=1):
@@ -84,29 +89,38 @@ class common_uniq_snp_positions():
         ''' get unique snps by chr and position '''
         print("Getting at least")
         self.atleast = atleast
-        for key1 in self.all_lines.keys():
-            for key2 in self.all_lines[key1].keys():
-                if int(self.all_lines[key1][key2]["count"] ) >= self.atleast:
-                    print(key1 + "\t" + key2 + "\tin file(s):" + ",".join(self.all_lines[key1][key2]["file"]))
+        with open("snps_atleast.txt", 'w') as atleastfh:
+            for key1 in self.all_lines.keys():
+                for key2 in self.all_lines[key1].keys():
+                    if int(self.all_lines[key1][key2]["count"] ) >= self.atleast:
+                        # print(key1 + "\t" + key2 + "\tin file(s):" + ",".join(self.all_lines[key1][key2]["file"]))
+                        atleastfh.write(key1 + "\t" + key2 + "\tin file(s):" + ",".join(self.all_lines[key1][key2]["file"]) + "\n")
+        print("SNPs present at least " + str(atleast) + " times are written to file: snps_atleast.txt\n")
 
     def get_exactly(self, exactly=1):
         ''' get the snps that are exactly N times among the files '''
         print("Getting exactly")
         self.exactly = exactly
-        for key1 in self.all_lines.keys():
-            for key2 in self.all_lines[key1].keys():
-                if int(self.all_lines[key1][key2]["count"] ) == self.exactly:
-                    print(key1 + "\t" + key2 + "\tin file(s):" + ",".join(self.all_lines[key1][key2]["file"]))
+        with open("snps_exactly.txt", 'w') as exactlyfh:
+            for key1 in self.all_lines.keys():
+                for key2 in self.all_lines[key1].keys():
+                    if int(self.all_lines[key1][key2]["count"] ) == self.exactly:
+                        # print(key1 + "\t" + key2 + "\tin file(s):" + ",".join(self.all_lines[key1][key2]["file"]))
+                        exactlyfh.write(key1 + "\t" + key2 + "\tin file(s):" + ",".join(self.all_lines[key1][key2]["file"]) + "\n")
+        print("SNPs present exactly " + str(exactly) + " times are written to file: snps_exactly.txt\n")
     
     def get_atmost(self, atmost=1):
         ''' get the snp positions that are occurring at most N times among the files '''
 
         print("Getting at most")
         self.atmost = atmost
-        for key1 in self.all_lines.keys():
-            for key2 in self.all_lines[key1].keys():
-                if int(self.all_lines[key1][key2]["count"] ) <= self.atmost:
-                    print(key1 + "\t" + key2 + "\tin file(s):" + ",".join(self.all_lines[key1][key2]["file"]))
+        with open("snps_atmost.txt", 'w') as atmostfh:
+            for key1 in self.all_lines.keys():
+                for key2 in self.all_lines[key1].keys():
+                    if int(self.all_lines[key1][key2]["count"] ) <= self.atmost:
+                        # print(key1 + "\t" + key2 + "\tin file(s):" + ",".join(self.all_lines[key1][key2]["file"]))
+                        atmostfh.write(key1 + "\t" + key2 + "\tin file(s):" + ",".join(self.all_lines[key1][key2]["file"]) + "\n")
+        print("SNPs present atmost " + str(atmost) + " times are written to file: snps_atmost.txt\n")
 
 
 if __name__ =='__main__':
