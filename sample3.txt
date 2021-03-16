@@ -1,0 +1,9 @@
+1 209683 .  T  C T
+1 356092 .  A  G A
+1 392657 .  A  G A
+5 3686350 .  T  G T
+5 3745793 .  T  G T
+5 4406350 .  T  C T
+6 4099566 .  A  G A
+supercont8.8 179745 .  A  T A
+supercont8.8 349832 . A C T
